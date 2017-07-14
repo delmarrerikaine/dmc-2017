@@ -35,7 +35,6 @@ Project Organization
 	│   └── all.ipynb         		<- Jupyter notebook with all work.
 	│
 	├── reports				<- Generated analysis as HTML, PDF, LaTeX, etc.
-	│   └── all.html			<- Generated analysis as HTML
 	│  
 	└── src					<- Source code for use in this project.
 	    ├── evaluate.py			<- Source code for evaluation of error points.
