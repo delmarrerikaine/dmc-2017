@@ -2,7 +2,7 @@ dmc-2017
 ==============================
 
 This project, participant of Data Mining Cup 2017, analyzes the set in order to recognize existing relationships of dynamic prices strategies and creates the model that can predict revenues given certain training set.
-Due to some problems with submission this project not represented in ranking. Result error points equal 9734.45107402, what at 18.5% worse than 1st place result and match 23rd place.
+Due to some problems with submission this project was not represented in ranking. Result error points equal 9734.45107402 which is 18.5% worse than 1st place result and matches 23rd place.
 
 Raw data can be downloaded from http://www.data-mining-cup.de/en/dmc-competition/task/
 
@@ -25,9 +25,9 @@ Project Organization
 	│       ├── class.csv			<- Information for the classification time period.
 	│       ├── items.csv			<- Attributes of all the products that do not change with time.
 	│       ├── realclass.csv       	<- Answers
-	│       └── train.csv			<- Information for the lerning time period.
+	│       └── train.csv			<- Information for the learning time period.
 	│
-	├── models				<- Trained and serialized models, model predictions, or model summari
+	├── models				<- Trained and serialized models, model predictions, or model summary
 	│   ├── model_lasso.pkl			<- Saved Lasso model.
 	│   └── model_ridge.pkl			<- Saved Riege model.
 	│
