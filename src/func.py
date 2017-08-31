@@ -50,15 +50,6 @@ def solveNA(df,df2,coef,flag):
         df['campaignIndex'] = df['campaignIndex'].fillna('D')
     else:  
         df['competitorPrice'] = df['competitorPrice'].fillna(df2['rrp']*coef)
-        if 'pharmForm' in df.columns:
-            df['pharmForm'] = df['pharmForm'].cat.add_categories(['no_pharmForm'])
-            df['pharmForm'] = df['pharmForm'].fillna('no_pharmForm')
-        if 'category' in df.columns:
-            df['category'] = df['category'].cat.add_categories([410])
-            df['category'] = df['category'].fillna(410)
-        if 'campaignIndex' in df.columns:
-            df['campaignIndex'] = df['campaignIndex'].cat.add_categories(['D'])
-            df['campaignIndex'] = df['campaignIndex'].fillna('D')
     columns2=['category', 'manufacturer']
     for col2 in columns2:
         if col2 in df.columns:
@@ -87,8 +78,7 @@ def Dummies(df):
 def solveCategorical(c1,df1,df2,flag):
     """
     This function creates new columns in items DataFrame uses existing columns 
-    with category datatype and high cardinality as input and pd.get_dummies for creation.
-    Attention high time of execution, because using unefficient tuple
+    with category datatype and high cardinality as input.
     Parameters
     ----------
     c1   : string with name of column which we try to describe
@@ -101,33 +91,21 @@ def solveCategorical(c1,df1,df2,flag):
     df2 : pandas.DataFrame with new float64 columns.
     
     """
-    def f(x):
-        tuples = [tuple(i) for i in x.values]
-        tuples.reverse()
-        res=[]
-        for i in xrange(len(tuples)):
-            try:
-                res.append(t2[tuples.pop()])
-            except:
-                res.append(np.nan)
-        return res
     columns=['group','content','pharmForm','category','manufacturer']
     for L in range(1, 4):
         for col in it.combinations(columns, L):
-            print col
             t1=df1.groupby(list(col))
-            t2=dict(t1[c1].mean()) 
+            t2=t1[c1].mean()
             str1='_'.join(col)
-            if len(col)==1:
-                df2[c1+'_'+str1+'_mean']=df2[col[0]].map(t2)
-            else:
-                df2[c1+'_'+str1+'_mean']=f(df2[list(col)])
+            t2 = t2.reset_index()
+            t2.rename(columns = {c1:c1+'_'+str1+'_mean'}, inplace = True)
+            df2 = df2.merge(t2, on=list(col), how='left')
             if flag==1:
-                t2=dict(t1[c1].count())
-                if len(col)==1:
-                    df2[c1+'_'+str1+'_count']=df2[col[0]].map(t2)
-                else:
-                    df2[c1+'_'+str1+'_count']=np.array(f(df2[list(col)]))/2756003.0
+                t2=t1[c1].count()
+                t2 = t2.reset_index()
+                t2[c1]=t2[c1]/2756003.0
+                t2.rename(columns = {c1:c1+'_'+str1+'_count'}, inplace = True)
+                df2 = df2.merge(t2, on=list(col), how='left')
     return df2
 
 
