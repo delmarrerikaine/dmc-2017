@@ -1,11 +1,5 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""
-Created on Tue May 30 00:30:57 2017
-
-@author: roman
-"""
-
 import pandas as pd
 import numpy as np
 import itertools as it
@@ -48,8 +42,22 @@ def solveNA(df,df2,coef,flag):
         df['pharmForm'] = df['pharmForm'].fillna('no_pharmForm')   
         df['category'] = df['category'].fillna(410)
         df['campaignIndex'] = df['campaignIndex'].fillna('D')
+    elif flag==2:
+        df['competitorPrice'] = df['competitorPrice'].fillna(df2['rrp']*coef)
+        df['pharmForm'] = df['pharmForm'].fillna('no_pharmForm')
+        df['category'] = df['category'].fillna(410)
+        df['campaignIndex'] = df['campaignIndex'].fillna('D')       
     else:  
         df['competitorPrice'] = df['competitorPrice'].fillna(df2['rrp']*coef)
+        if 'pharmForm' in df.columns:
+            df['pharmForm'] = df['pharmForm'].cat.add_categories(['no_pharmForm'])
+            df['pharmForm'] = df['pharmForm'].fillna('no_pharmForm')
+        if 'category' in df.columns:
+            df['category'] = df['category'].cat.add_categories([410])
+            df['category'] = df['category'].fillna(410)
+        if 'campaignIndex' in df.columns:
+            df['campaignIndex'] = df['campaignIndex'].cat.add_categories(['D'])
+            df['campaignIndex'] = df['campaignIndex'].fillna('D')
     columns2=['category', 'manufacturer']
     for col2 in columns2:
         if col2 in df.columns:
